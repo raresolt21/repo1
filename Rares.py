@@ -1,3 +1,8 @@
 print("Python e tare")
 print("Cristi e tare")
 print("Facem beleaua")
+print("CONFLICT")
+print("CONFLICT")
+print("CONFLICT")
+print("CONFLICT")
+print("CONFLICT")
