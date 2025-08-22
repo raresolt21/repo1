@@ -1,2 +1,7 @@
 print("Python e tare")
 print("Cristi e tare")
+print("CONFLICT")
+print("CONFLICT")
+print("CONFLICT")
+print("CONFLICT")
+print("CONFLICT")
