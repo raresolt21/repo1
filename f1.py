@@ -1,1 +1,1 @@
-print()
+print("Ce faceti bai")print()
