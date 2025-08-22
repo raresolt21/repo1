@@ -1,0 +1,112 @@
+import pandas as pd
+
+# Define the DataPipelineClass
+# Create the class: Define a class named DataPipeline.
+# Class variable: Add a class variable pipeline_count to keep track of the number of pipeline instances created.
+# Constructor (__init__):
+# Initialize the instance variables:
+# name for the pipeline's name.
+# steps as an empty list for the processing steps.
+# data as None to hold input and transformed data.
+# Increment the class variable pipeline_count each time a new instance is created.
+# Add Step Method (add_step): Write a method add_step that appends a given step to the steps list.
+# Pipeline Execution (run): Implement the run method to execute each step in sequence and return the final data.
+# Logging (log_message): Create a method to log messages during execution to track progress.
+# Data Validation (validate_data): Develop a validation function to check for and handle missing data in the DataFrame.
+
+class DataPipeline:
+    pipeline_count = 0
+
+    def __init__(self, name):
+        self.name = name
+        self.steps = []
+        self.data = None
+        DataPipeline.pipeline_count += 1
+
+    def add_step(self, step):
+        self.steps.append(step)
+
+    def run(self):
+        self.log_message(f"Starting pipeline: {self.name}")
+        for step in self.steps:
+            self.log_message(f"Running step: {step.step_name}")
+            self.data = step.execute(self.data)
+        self.log_message(f"Completed pipeline: {self.name}")
+        return self.data
+
+    def log_message(self, message):
+        print(f"[LOG] {message}")
+
+    def validate_data(self, data):
+        if data.isnull().values.any():
+            raise ValueError("Data contains missing values!")
+        self.log_message("Data validation passed")
+        return True
+
+# Define the DataStepClass
+# Create the class: Define a class named DataStep.
+# Constructor (__init__): Implement initialization that accepts step_name and function arguments.
+# Execution Method (execute): Create a method that calls the function associated with the step.
+ 
+
+class DataStepClass:
+    def __init__(self, step_name, function):
+        self.step_name = step_name
+        self.function = function
+
+    def execute(self, data):
+        return self.function(data)
+
+# Additional Requirements
+# Step Functions:
+# Define standalone functions (extract_data, transform_data, load_data) for each pipeline step, which print actions like "Extracting data...", "Transforming data...", etc.
+# Instance Creation:
+# Create instances of DataStep for each defined function.
+# Provide descriptive names for each step, e.g., "Extract", "Transform", "Load".
+# Pipeline Instance:
+# Create an instance of DataPipeline, with a descriptive name like "ETL Pipeline".
+# Add each step instance to the pipeline using the add_stepmethod.
+# Execution:
+# Call the run method on the pipeline instance to perform all the steps.
+ 
+# Create Step Functions
+# Extract Data (extract_data): Simulate extracting data by creating a DataFrame.
+# Transform Data (transform_data): Add an additional column to categorize age into 'Young' or 'Adult'.
+# Load Data (load_data): Display the DataFramecontent after transformation.
+ 
+
+def extract_data(data):
+    print("Extracting data...")
+    df = pd.DataFrame({
+        'name': ['Alice', 'Bob', 'Charlie'],
+        'age': [25, 30, 35],
+        'city': ['New York', 'Los Angeles', 'Chicago'],
+    })
+    return df
+
+def transform_data(data):
+    print("Transforming data...")
+    data['age_category'] = data['age'].apply(lambda x: 'Young' if x < 30 else 'Adult')
+    return data
+
+def load_data(data):
+    print("Loading data...")
+    print(data)
+    return data
+
+
+extract_step = DataStepClass("Extract", extract_data)
+transform_step = DataStepClass("Transform", transform_data)
+load_step = DataStepClass("Load", load_data)
+
+pipeline = DataPipeline("ETL Pipeline")
+
+pipeline.add_step(extract_step)
+pipeline.add_step(transform_step)
+pipeline.add_step(load_step)
+
+
+final_data = pipeline.run()
+
+pipeline.validate_data(final_data)
+print(f"Total pipelines created: {DataPipeline.pipeline_count}")
